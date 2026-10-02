@@ -72,3 +72,46 @@ The missing `CouponCode` values will be considered during the cleaning phase bef
 **Completed**
 
 Phase 2 established the current data-quality state of the raw dataset and provides the basis for the cleaning decisions in the next phase.
+
+---
+
+## Phase 3 — Handling Missing Values
+
+### Overview
+
+The third phase focused on handling the missing values identified during the data-quality audit.
+
+### Issue Identified
+
+- `CouponCode` contained 309 missing values.
+- No other columns contained missing values.
+
+### Investigation
+
+The affected records were reviewed before deciding how the missing values should be handled. The records contained normal order information, and there was no separate field showing whether a coupon had been used.
+
+### Treatment
+
+The 309 missing `CouponCode` values were replaced with `NO_COUPON`.
+
+This treatment was applied to a copy of the raw dataset so that the original source file remained unchanged.
+
+### Result
+
+- Missing `CouponCode` values before cleaning: 309
+- Missing `CouponCode` values after cleaning: 0
+- Records before cleaning: 1,200
+- Records after cleaning: 1,200
+- Columns before cleaning: 14
+- Columns after cleaning: 14
+- Records removed: 0
+
+The cleaned dataset was saved as:
+
+`data/processed/cleaned_dataset.xlsx`
+
+### Phase Status
+
+**Completed**
+
+Phase 3 handled the missing values without removing useful records and produced the first cleaned version of the dataset.

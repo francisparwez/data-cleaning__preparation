@@ -31,16 +31,20 @@ The main objectives of this project are:
 data-cleaning__preparation/
 │
 ├── data/
-│   └── raw/
-│       └── Dataset for Data Analytics.xlsx
+│   ├── raw/
+│   │   └── Dataset for Data Analytics.xlsx
+│   └── processed/
+│       └── cleaned_dataset.xlsx
 │
 ├── notebooks/
 │   ├── 01_understand_raw_dataset.ipynb
-│   └── 02_data_quality_audit.ipynb
+│   ├── 02_data_quality_audit.ipynb
+│   └── 03_handle_missing_values.ipynb
 │
 ├── .gitignore
 ├── README.md
 ├── SUMMARY.md
+├── CHANGE_LOG.md
 └── requirements.txt
 ```
 
@@ -146,3 +150,33 @@ No cleaning changes were applied during the audit phase. The audit results will 
 ## Next Phase
 
 The next phase will focus on cleaning and preparing the dataset based on the issues identified during the audit. Each cleaning decision will be documented so that the changes can be traced and explained.
+
+---
+
+## Phase 3 — Handling Missing Values
+
+The third phase focused on handling the missing values identified during the data-quality audit.
+
+### Issue Identified
+
+- 309 missing values were found in `CouponCode`.
+- No other columns contained missing values.
+
+### Treatment
+
+The affected records were reviewed before making a cleaning decision. Since the dataset does not contain a separate field showing whether a coupon was used, the missing `CouponCode` values were treated as orders where no coupon was recorded and replaced with `NO_COUPON`.
+
+The change was applied to a working copy of the raw dataset so that the original source data remained unchanged.
+
+### Result
+
+- Missing `CouponCode` values before cleaning: 309
+- Missing `CouponCode` values after cleaning: 0
+- Records retained: 1,200
+- Records removed: 0
+- Final dataset size: 1,200 rows × 14 columns
+- Cleaned dataset: `data/processed/cleaned_dataset.xlsx`
+
+### Phase 3 Status
+
+**Completed**
