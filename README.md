@@ -2,20 +2,23 @@
 
 This project is part of my Data Analytics Internship at DecodeLabs.
 
-The goal of this project is to take a raw dataset and prepare it for reliable analysis by identifying and handling data-quality issues such as missing values, duplicate records, and inconsistent data formats. The project also focuses on checking data integrity so that the final dataset can be used with confidence in later analysis.
+The goal of this project is to take a raw Excel dataset, investigate its data quality, apply only the necessary cleaning and standardization steps, and produce a reliable dataset that is ready for analysis.
+
+The project follows a step-by-step workflow so that each cleaning decision can be inspected and traced back to the original data.
 
 ## Project Objective
 
-The main objectives of this project are:
+The project covers:
 
-- Understand and inspect the raw dataset
-- Identify missing or null values
-- Check for duplicate records and duplicate IDs
-- Validate dates and numerical fields
-- Check consistency of text-based fields
-- Correct data-quality issues where necessary
-- Validate the cleaned dataset
-- Document the changes made during the cleaning process
+- Understanding and inspecting the raw dataset
+- Auditing missing values and data-quality issues
+- Handling missing values appropriately
+- Checking duplicate rows and duplicate IDs
+- Validating dates, numeric fields, and text fields
+- Standardizing monetary precision where needed
+- Performing final data-quality validation
+- Creating and verifying the final cleaned dataset
+- Documenting meaningful changes in the change log
 
 ## Tools Used
 
@@ -42,7 +45,8 @@ data-cleaning__preparation/
 │   ├── 03_handle_missing_values.ipynb
 │   ├── 04_check_remove_duplicates.ipynb
 │   ├── 05_correct_standardize_formats.ipynb
-│   └── 06_final_validation.ipynb
+│   ├── 06_final_validation.ipynb
+│   └── 07_create_cleaned_dataset.ipynb
 │
 ├── .gitignore
 ├── README.md
@@ -53,115 +57,78 @@ data-cleaning__preparation/
 
 ## Phase 1 — Understanding the Raw Dataset
 
-The first phase focused on understanding the raw dataset before applying any cleaning or transformation.
+The first phase focused on understanding the raw dataset before making any changes.
 
-During this phase, I:
+### What was reviewed
 
-- Loaded the raw Excel dataset using Pandas
-- Checked the number of records and columns
-- Reviewed the column names and data types
-- Inspected sample records and basic statistics
-- Documented the purpose of each column
-- Reviewed the values in key categorical fields
-- Reviewed the identifier fields
-- Checked the date range covered by the dataset
+- Dataset size and structure
+- Column names
+- Data types
+- Sample records
+- Numeric fields
+- Identifier fields
+- Categorical fields
+- Date coverage
 
-### Phase 1 Findings
+### Findings
 
-- The dataset contains 1,200 records and 14 columns.
-- The dataset contains order, customer, product, payment, shipping, and pricing information.
-- The `Date` column is stored as a datetime type.
-- `Quantity`, `UnitPrice`, `ItemsInCart`, and `TotalPrice` are stored as numeric fields.
-- `CouponCode` contains 309 missing values, representing 25.75% of the records.
-- The date range in the dataset is from 2023-01-01 to 2025-06-30.
-- The `OrderID`, `CustomerID`, and `TrackingNumber` fields were reviewed to understand their identifier structure.
-- No cleaning or transformation was performed during this phase.
+- 1,200 records
+- 14 columns
+- Date range: 2023-01-01 to 2025-06-30
+- `Date` is stored as a datetime field
+- `Quantity`, `UnitPrice`, `ItemsInCart`, and `TotalPrice` are numeric
+- `CouponCode` contains 309 missing values
+- `OrderID`, `CustomerID`, and `TrackingNumber` were reviewed as identifier fields
+- No cleaning was performed during this phase
 
-### Phase 1 Status
-
-**Completed**
-
----
+**Status: Completed**
 
 ## Phase 2 — Data Quality Audit
 
-The second phase focused on systematically checking the raw dataset for potential data-quality issues before applying any cleaning changes.
+The second phase audited the raw dataset before applying cleaning changes.
 
-The audit covered:
+### Checks performed
 
 - Missing values
-- Duplicate rows
-- Duplicate OrderIDs
+- Complete duplicate rows
+- Duplicate `OrderID` values
 - Date quality
-- Numeric data quality
+- Numeric values
 - Text consistency
 - Identifier formats
-- Logical and business-rule checks
+- Pricing consistency
 
-### Phase 2 Findings
+### Findings
 
-#### Missing Values
+- 309 missing `CouponCode` values
+- 0 complete duplicate rows
+- 0 duplicate `OrderID` values
+- 0 missing dates
+- 0 invalid dates
+- Identifier formats were consistent
+- No invalid audited numeric values were identified
+- No leading or trailing whitespace issues were found in the audited text fields
+- All 1,200 `TotalPrice` values matched `Quantity × UnitPrice`
 
-- `CouponCode` contains 309 missing values.
-- The missing values were inspected but not changed during the audit.
-- The remaining columns contained no missing values.
+No cleaning changes were made during the audit itself.
 
-#### Duplicate Records
-
-- No complete duplicate rows were found.
-- No duplicate `OrderID` values were found.
-
-#### Date Quality
-
-- The `Date` column is stored as `datetime64[ns]`.
-- No missing dates were found.
-- No values failed date conversion.
-- The dataset covers dates from 2023-01-01 to 2025-06-30.
-
-#### Numeric Data
-
-- `Quantity`, `UnitPrice`, `ItemsInCart`, and `TotalPrice` are stored as numeric data types.
-- No invalid quantity values were found.
-- No non-positive unit prices were found.
-- No negative item counts were found.
-- No negative total prices were found.
-
-#### Text Consistency
-
-- The main categorical fields were reviewed for their unique values.
-- No leading or trailing whitespace issues were detected in the audited text fields.
-
-#### Identifier Formats
-
-- All `OrderID` values matched the observed `ORD######` pattern.
-- All `CustomerID` values matched the observed `C#####` pattern.
-- All `TrackingNumber` values matched the observed `TRK########` pattern.
-
-#### Logical Check
-
-- `TotalPrice` was compared with `Quantity × UnitPrice`.
-- All 1,200 records matched the expected calculation.
-
-### Phase 2 Status
-
-**Completed**
-
----
+**Status: Completed**
 
 ## Phase 3 — Handling Missing Values
 
-The third phase focused on handling the missing values identified during the data-quality audit.
+The only missing values identified in the audit were in `CouponCode`.
 
-### Issue Identified
+### Decision
 
-- 309 missing values were found in `CouponCode`.
-- No other columns contained missing values.
+The 309 missing `CouponCode` values were replaced with:
 
-### Treatment
+```text
+NO_COUPON
+```
 
-The affected records were reviewed before making a cleaning decision. Since the dataset does not contain a separate field showing whether a coupon was used, the missing `CouponCode` values were treated as orders where no coupon was recorded and replaced with `NO_COUPON`.
+This decision was based on the structure of the dataset. There is no separate field showing whether a coupon was used, so the missing values were treated as no coupon being recorded.
 
-The change was applied to a working copy of the raw dataset so that the original source data remained unchanged.
+The original raw dataset was kept unchanged. The transformation was applied to a working copy.
 
 ### Result
 
@@ -169,175 +136,135 @@ The change was applied to a working copy of the raw dataset so that the original
 - Missing `CouponCode` values after cleaning: 0
 - Records retained: 1,200
 - Records removed: 0
-- Dataset size after cleaning: 1,200 rows × 14 columns
-- Cleaned dataset: `data/processed/cleaned_dataset.xlsx`
+- Dataset size: 1,200 × 14
 
-### Phase 3 Status
-
-**Completed**
-
----
+**Status: Completed**
 
 ## Phase 4 — Check and Remove Duplicates
 
-The fourth phase focused on checking the Phase 3 cleaned dataset for complete duplicate records and duplicate `OrderID` values.
+The cleaned dataset was checked for:
 
-### Checks Performed
-
-- Complete duplicate-row check
-- Duplicate `OrderID` check
+- Complete duplicate rows
+- Duplicate `OrderID` values
 - Final duplicate verification
-- Row-count verification
+- Row-count changes
 
-### Findings
+### Result
 
-- No complete duplicate rows were found.
-- No duplicate `OrderID` values were found.
-- No records were removed.
-- The dataset remained at 1,200 records and 14 columns.
+- Duplicate rows: 0
+- Duplicate `OrderID` values: 0
+- Records removed: 0
+- Dataset remained 1,200 × 14
 
-### Cleaning Decision
+Because no duplicates were found, no duplicate-removal transformation was required.
 
-No duplicate-removal action was required because neither the complete-row duplicate check nor the duplicate `OrderID` check identified any duplicates.
-
-### Phase 4 Status
-
-**Completed**
-
----
+**Status: Completed**
 
 ## Phase 5 — Correct and Standardize Data Formats
 
-The fifth phase focused on validating date, numeric, and text formats in the cleaned dataset and applying transformations only where an actual formatting issue was identified.
+This phase checked dates, numeric fields, and text fields and applied transformations only where needed.
 
-### Date Format
+### Date
 
-The `Date` column was verified for:
+- `Date` remained `datetime64[ns]`
+- No missing dates
+- Date range remained 2023-01-01 to 2025-06-30
+- No date transformation was required
 
-- Datetime data type
-- Missing values
-- Date range
-- Consistent date representation
+### Numeric fields
 
-### Date Findings
+- `Quantity` remained `int64`
+- `ItemsInCart` remained `int64`
+- `UnitPrice` remained `float64`
+- `TotalPrice` remained `float64`
+- `UnitPrice` and `TotalPrice` were rounded to two decimal places for consistent monetary precision
+- Pricing logic remained valid for all 1,200 records
 
-- `Date` is stored as `datetime64[ns]`.
-- No missing dates were found.
-- The date range remains 2023-01-01 to 2025-06-30.
-- The date values were already correctly stored, so no date transformation was required.
+### Text fields
 
-### Numeric Format
+- No missing text values
+- No blank or whitespace-only values
+- No leading or trailing whitespace issues
+- Existing text and identifier formats were kept unchanged because they were already consistent
 
-The numeric fields were reviewed for:
-
-- Data types
-- Missing values
-- Value ranges
-- Monetary precision
-
-### Numeric Findings
-
-- `Quantity` remained an integer field.
-- `ItemsInCart` remained an integer field.
-- `UnitPrice` remained a numeric field and was rounded to two decimal places.
-- `TotalPrice` remained a numeric field and was rounded to two decimal places.
-- No missing values were found in the numeric fields.
-
-The relationship between price and quantity was rechecked after the transformation:
-
-`TotalPrice = Quantity × UnitPrice`
-
-The validation remained successful for all 1,200 records.
-
-### Text Format
-
-The text and identifier fields were reviewed for:
-
-- Missing values
-- Blank values
-- Leading or trailing whitespace
-
-### Text Findings
-
-- No missing text values were found.
-- No blank or whitespace-only values were found.
-- No leading or trailing whitespace issues were found.
-- Existing capitalization and identifier formats were kept unchanged because they were already consistent.
-
-### Phase 5 Result
-
-- Date values required no transformation.
-- Numeric integer fields required no transformation.
-- `UnitPrice` and `TotalPrice` were rounded to two decimal places for consistent monetary precision.
-- Text fields required no transformation.
-- No records were removed.
-- Final dataset size remained 1,200 rows × 14 columns.
-- The final cleaned dataset was saved to `data/processed/cleaned_dataset.xlsx`.
-- The saved dataset was reloaded and the pricing business rule was verified again successfully.
-
-### Phase 5 Status
-
-**Completed**
-
----
+**Status: Completed**
 
 ## Phase 6 — Final Validation
 
-The sixth phase focused on performing the final validation of the cleaned dataset after all cleaning and standardization work was completed.
+The final cleaned dataset was reloaded and checked after all cleaning and standardization work.
 
-### Final Checks
+### Validation results
 
-The final cleaned dataset was reloaded and checked for:
+| Check                        |                   Result |
+| ---------------------------- | -----------------------: |
+| Records                      |                    1,200 |
+| Columns                      |                       14 |
+| Missing values               |                        0 |
+| Duplicate rows               |                        0 |
+| Duplicate `OrderID` values   |                        0 |
+| Invalid dates                |                        0 |
+| Missing dates                |                        0 |
+| Date type                    |         `datetime64[ns]` |
+| Date range                   | 2023-01-01 to 2025-06-30 |
+| Numeric-field missing values |                        0 |
+| Pricing business rule        |                   Passed |
 
-- Missing values
-- Complete duplicate rows
-- Duplicate `OrderID` values
-- Invalid dates
-- Missing dates
-- Numeric-field completeness
-- Pricing business-rule consistency
-- Final row and column counts
+**Status: Completed**
 
-### Final Validation Results
+## Phase 7 — Create the Cleaned Dataset
 
-- Records: 1,200
-- Columns: 14
-- Missing values: 0
-- Complete duplicate rows: 0
-- Duplicate `OrderID` values: 0
-- Invalid dates: 0
-- Missing dates: 0
-- Date data type: `datetime64[ns]`
-- Date range: 2023-01-01 to 2025-06-30
-- Numeric-field missing values: 0
-- Pricing business rule: Passed
+The final phase creates the official project output from the already validated cleaned dataset.
 
-The final validation dictionary confirmed:
+No additional cleaning or transformation is performed in this phase.
+
+### Final output
 
 ```text
-rows: 1200
-columns: 14
-missing_values: 0
-duplicate_rows: 0
-duplicate_order_ids: 0
-invalid_dates: 0
-pricing_check: True
+data/processed/cleaned_dataset.xlsx
 ```
 
-### Phase 6 Status
+The output file was:
 
-**Completed**
+1. Loaded from the validated cleaned dataset
+2. Checked before export
+3. Exported as the final Excel file
+4. Reloaded after export
+5. Verified again
 
-Phase 6 confirmed that the final cleaned dataset passed the required validation checks and is ready for downstream analysis.
+### Export verification
 
----
+- Shape: 1,200 × 14
+- Missing values: 0
+- Duplicate rows: 0
+- Duplicate `OrderID` values: 0
+- Invalid dates: 0
+- Pricing check: `True`
 
-## Overall Project Status
+**Status: Completed**
 
-**Phases 1 through 6 are complete.**
+## Final Cleaning Summary
 
-The project has now completed the documented data-cleaning, preparation, and final validation work covered by the current notebook sequence.
+The project made two actual data changes:
 
-The final cleaned dataset is available at:
+1. 309 missing `CouponCode` values were replaced with `NO_COUPON`
+2. `UnitPrice` and `TotalPrice` were rounded to two decimal places
 
-`data/processed/cleaned_dataset.xlsx`
+The project did **not** remove any records because duplicate checks found no duplicate rows or duplicate `OrderID` values.
+
+Dates and text fields were left unchanged because they were already valid and consistent.
+
+## Final Deliverable
+
+The final analysis-ready dataset is:
+
+```text
+data/processed/cleaned_dataset.xlsx
+```
+
+The original raw dataset remains separate and unchanged.
+
+## Final Project Status
+
+**Phases 1 through 7 are complete.**
+
+The cleaned dataset has been created, validated, exported, reloaded, and verified for the required data-quality conditions.
