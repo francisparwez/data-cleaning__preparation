@@ -41,7 +41,8 @@ data-cleaning__preparation/
 │   ├── 02_data_quality_audit.ipynb
 │   ├── 03_handle_missing_values.ipynb
 │   ├── 04_check_remove_duplicates.ipynb
-│   └── 05_correct_standardize_formats.ipynb
+│   ├── 05_correct_standardize_formats.ipynb
+│   └── 06_final_validation.ipynb
 │
 ├── .gitignore
 ├── README.md
@@ -280,11 +281,62 @@ The text and identifier fields were reviewed for:
 
 ---
 
-## Current Status
+## Phase 6 — Final Validation
 
-**Phases 1 through 5 are complete.**
+The sixth phase focused on performing the final validation of the cleaned dataset after all cleaning and standardization work was completed.
 
-The project has now completed the required data understanding, quality auditing, missing-value treatment, duplicate verification, and data-format validation/standardization work.
+### Final Checks
+
+The final cleaned dataset was reloaded and checked for:
+
+- Missing values
+- Complete duplicate rows
+- Duplicate `OrderID` values
+- Invalid dates
+- Missing dates
+- Numeric-field completeness
+- Pricing business-rule consistency
+- Final row and column counts
+
+### Final Validation Results
+
+- Records: 1,200
+- Columns: 14
+- Missing values: 0
+- Complete duplicate rows: 0
+- Duplicate `OrderID` values: 0
+- Invalid dates: 0
+- Missing dates: 0
+- Date data type: `datetime64[ns]`
+- Date range: 2023-01-01 to 2025-06-30
+- Numeric-field missing values: 0
+- Pricing business rule: Passed
+
+The final validation dictionary confirmed:
+
+```text
+rows: 1200
+columns: 14
+missing_values: 0
+duplicate_rows: 0
+duplicate_order_ids: 0
+invalid_dates: 0
+pricing_check: True
+```
+
+### Phase 6 Status
+
+**Completed**
+
+Phase 6 confirmed that the final cleaned dataset passed the required validation checks and is ready for downstream analysis.
+
+---
+
+## Overall Project Status
+
+**Phases 1 through 6 are complete.**
+
+The project has now completed the documented data-cleaning, preparation, and final validation work covered by the current notebook sequence.
 
 The final cleaned dataset is available at:
 

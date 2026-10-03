@@ -191,8 +191,58 @@ Phase 5 completed the required date, numeric, and text format checks and applied
 
 ---
 
+## Phase 6 — Final Validation
+
+### Overview
+
+The sixth phase performed the final validation of the cleaned dataset after all cleaning and standardization work was completed.
+
+### Final Checks
+
+- Missing-value validation
+- Complete duplicate-row validation
+- Duplicate `OrderID` validation
+- Date validation
+- Numeric-field validation
+- Pricing business-rule validation
+- Final row and column count validation
+
+### Final Validation Results
+
+- Records: 1,200
+- Columns: 14
+- Missing values: 0
+- Complete duplicate rows: 0
+- Duplicate `OrderID` values: 0
+- Invalid dates: 0
+- Missing dates: 0
+- Date data type: `datetime64[ns]`
+- Date range: 2023-01-01 to 2025-06-30
+- Numeric-field missing values: 0
+- Pricing business rule: Passed
+
+The final validation dictionary confirmed:
+
+```text
+rows: 1200
+columns: 14
+missing_values: 0
+duplicate_rows: 0
+duplicate_order_ids: 0
+invalid_dates: 0
+pricing_check: True
+```
+
+### Phase 6 Status
+
+**Completed**
+
+Phase 6 confirmed that the final cleaned dataset passed the required validation checks and is ready for downstream analysis.
+
+---
+
 ## Overall Project Status
 
-**Phases 1 through 5 are complete.**
+**Phases 1 through 6 are complete.**
 
-The project has now completed the documented data-cleaning and preparation work covered by the current notebook sequence.
+The project has now completed the documented data-cleaning, preparation, and final validation work covered by the current notebook sequence.
