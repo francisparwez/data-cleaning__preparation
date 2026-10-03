@@ -65,13 +65,11 @@ The second phase focused on auditing the raw dataset for potential data-quality 
 
 No cleaning changes were applied during the audit phase.
 
-The missing `CouponCode` values will be considered during the cleaning phase before deciding how they should be treated.
+The missing `CouponCode` values were carried forward for investigation and treatment in Phase 3.
 
 ### Phase Status
 
 **Completed**
-
-Phase 2 established the current data-quality state of the raw dataset and provides the basis for the cleaning decisions in the next phase.
 
 ---
 
@@ -114,4 +112,34 @@ The cleaned dataset was saved as:
 
 **Completed**
 
-Phase 3 handled the missing values without removing useful records and produced the first cleaned version of the dataset.
+---
+
+## Phase 4 — Check and Remove Duplicates
+
+### Overview
+
+The fourth phase focused on checking the Phase 3 cleaned dataset for complete duplicate records and duplicate `OrderID` values before making any removal decisions.
+
+### Checks Performed
+
+- Complete duplicate-row check
+- Duplicate `OrderID` check
+- Final duplicate verification
+- Row-count verification
+
+### Findings
+
+- No complete duplicate rows were found.
+- No duplicate `OrderID` values were found.
+- No records were removed.
+- The dataset remained at 1,200 records and 14 columns.
+
+### Cleaning Decision
+
+No duplicate-removal action was required because neither the complete-row duplicate check nor the duplicate `OrderID` check identified any duplicates.
+
+### Phase Status
+
+**Completed**
+
+Phase 4 confirmed that the cleaned dataset contains no duplicate rows or duplicate `OrderID` values and that no records needed to be removed.

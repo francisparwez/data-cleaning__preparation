@@ -39,7 +39,8 @@ data-cleaning__preparation/
 ├── notebooks/
 │   ├── 01_understand_raw_dataset.ipynb
 │   ├── 02_data_quality_audit.ipynb
-│   └── 03_handle_missing_values.ipynb
+│   ├── 03_handle_missing_values.ipynb
+│   └── 04_check_remove_duplicates.ipynb
 │
 ├── .gitignore
 ├── README.md
@@ -143,14 +144,6 @@ The audit covered:
 
 **Completed**
 
-No cleaning changes were applied during the audit phase. The audit results will be used to determine the appropriate cleaning actions in the next phase.
-
----
-
-## Next Phase
-
-The next phase will focus on cleaning and preparing the dataset based on the issues identified during the audit. Each cleaning decision will be documented so that the changes can be traced and explained.
-
 ---
 
 ## Phase 3 — Handling Missing Values
@@ -180,3 +173,37 @@ The change was applied to a working copy of the raw dataset so that the original
 ### Phase 3 Status
 
 **Completed**
+
+---
+
+## Phase 4 — Check and Remove Duplicates
+
+The fourth phase focused on checking the Phase 3 cleaned dataset for complete duplicate records and duplicate `OrderID` values.
+
+### Checks Performed
+
+- Complete duplicate-row check
+- Duplicate `OrderID` check
+- Final duplicate verification
+- Row-count verification
+
+### Findings
+
+- No complete duplicate rows were found.
+- No duplicate `OrderID` values were found.
+- No records were removed.
+- The dataset remained at 1,200 records and 14 columns.
+
+Since no duplicates were identified, no duplicate-removal transformation was necessary.
+
+### Phase 4 Status
+
+**Completed**
+
+---
+
+## Current Status
+
+Phases 1 through 4 are complete.
+
+The next stage will focus on the remaining data-format checks and cleaning work required by the project.
