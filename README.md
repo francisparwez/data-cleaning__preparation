@@ -40,7 +40,8 @@ data-cleaning__preparation/
 │   ├── 01_understand_raw_dataset.ipynb
 │   ├── 02_data_quality_audit.ipynb
 │   ├── 03_handle_missing_values.ipynb
-│   └── 04_check_remove_duplicates.ipynb
+│   ├── 04_check_remove_duplicates.ipynb
+│   └── 05_correct_standardize_formats.ipynb
 │
 ├── .gitignore
 ├── README.md
@@ -167,7 +168,7 @@ The change was applied to a working copy of the raw dataset so that the original
 - Missing `CouponCode` values after cleaning: 0
 - Records retained: 1,200
 - Records removed: 0
-- Final dataset size: 1,200 rows × 14 columns
+- Dataset size after cleaning: 1,200 rows × 14 columns
 - Cleaned dataset: `data/processed/cleaned_dataset.xlsx`
 
 ### Phase 3 Status
@@ -194,7 +195,9 @@ The fourth phase focused on checking the Phase 3 cleaned dataset for complete du
 - No records were removed.
 - The dataset remained at 1,200 records and 14 columns.
 
-Since no duplicates were identified, no duplicate-removal transformation was necessary.
+### Cleaning Decision
+
+No duplicate-removal action was required because neither the complete-row duplicate check nor the duplicate `OrderID` check identified any duplicates.
 
 ### Phase 4 Status
 
@@ -202,8 +205,87 @@ Since no duplicates were identified, no duplicate-removal transformation was nec
 
 ---
 
+## Phase 5 — Correct and Standardize Data Formats
+
+The fifth phase focused on validating date, numeric, and text formats in the cleaned dataset and applying transformations only where an actual formatting issue was identified.
+
+### Date Format
+
+The `Date` column was verified for:
+
+- Datetime data type
+- Missing values
+- Date range
+- Consistent date representation
+
+### Date Findings
+
+- `Date` is stored as `datetime64[ns]`.
+- No missing dates were found.
+- The date range remains 2023-01-01 to 2025-06-30.
+- The date values were already correctly stored, so no date transformation was required.
+
+### Numeric Format
+
+The numeric fields were reviewed for:
+
+- Data types
+- Missing values
+- Value ranges
+- Monetary precision
+
+### Numeric Findings
+
+- `Quantity` remained an integer field.
+- `ItemsInCart` remained an integer field.
+- `UnitPrice` remained a numeric field and was rounded to two decimal places.
+- `TotalPrice` remained a numeric field and was rounded to two decimal places.
+- No missing values were found in the numeric fields.
+
+The relationship between price and quantity was rechecked after the transformation:
+
+`TotalPrice = Quantity × UnitPrice`
+
+The validation remained successful for all 1,200 records.
+
+### Text Format
+
+The text and identifier fields were reviewed for:
+
+- Missing values
+- Blank values
+- Leading or trailing whitespace
+
+### Text Findings
+
+- No missing text values were found.
+- No blank or whitespace-only values were found.
+- No leading or trailing whitespace issues were found.
+- Existing capitalization and identifier formats were kept unchanged because they were already consistent.
+
+### Phase 5 Result
+
+- Date values required no transformation.
+- Numeric integer fields required no transformation.
+- `UnitPrice` and `TotalPrice` were rounded to two decimal places for consistent monetary precision.
+- Text fields required no transformation.
+- No records were removed.
+- Final dataset size remained 1,200 rows × 14 columns.
+- The final cleaned dataset was saved to `data/processed/cleaned_dataset.xlsx`.
+- The saved dataset was reloaded and the pricing business rule was verified again successfully.
+
+### Phase 5 Status
+
+**Completed**
+
+---
+
 ## Current Status
 
-Phases 1 through 4 are complete.
+**Phases 1 through 5 are complete.**
 
-The next stage will focus on the remaining data-format checks and cleaning work required by the project.
+The project has now completed the required data understanding, quality auditing, missing-value treatment, duplicate verification, and data-format validation/standardization work.
+
+The final cleaned dataset is available at:
+
+`data/processed/cleaned_dataset.xlsx`
